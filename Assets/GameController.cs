@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
 
+ using System.Linq;
+using System;
 public class GameController : MonoBehaviour
 {
     public const string MatchEmailPattern =
@@ -15,6 +17,7 @@ public class GameController : MonoBehaviour
     public GameObject MainPanel;
      public GameObject SignupPanel;
      public GameObject SigninPanel;
+     public GameObject WelcomePanel;
 
     
     public Button SignUpBtn;
@@ -38,18 +41,22 @@ public class GameController : MonoBehaviour
     public Button RegisteredSigninPanelBtn;
     public Button BackSignInBtn;
     /// </Sign in ENDED>
+     public List< PlayerData> Obj;
 
     // Start is called before the first frame update
     void Start()
     {
-        MainPanel.SetActive(true);
+        if (PlayerPrefs.HasKey("PlayerData"))
+        {
+            Obj = LoadPlayerData();
+        }
+         MainPanel.SetActive(true);
         SignupPanel.SetActive(false);
         SigninPanel.SetActive(false);
+        WelcomePanel.SetActive(false);
 
         BackSignInBtn.onClick.AddListener(OnbackPanel);
         BackSignupBtn.onClick.AddListener(OnbackPanel);
-
-
         SignUpBtn.onClick.AddListener(OnSignUpClick);
         RegisteredSigninPanelBtn.onClick.AddListener(OnSignUpClick);
         SignInBtn.onClick.AddListener(OnSignInClick);
@@ -78,6 +85,14 @@ public class GameController : MonoBehaviour
         SignupPanel.SetActive(false);
         SigninPanel.SetActive(true);
     }
+    void ShowWelcomeScreen()
+    {
+        MainPanel.SetActive(false);
+        SignupPanel.SetActive(false);
+        SigninPanel.SetActive(false);
+        WelcomePanel.SetActive(true);
+
+    }
     void Login()
     {
         print("Login");
@@ -94,8 +109,39 @@ public class GameController : MonoBehaviour
         else
         {
             Debug.LogError("email format is not valid");
-         }  
+         }
+        if (PlayerPrefs.HasKey("PlayerData"))
+        {
+            Obj = LoadPlayerData();
+
+            if (Obj.Count > 0)
+            {
+                bool _emailcheck = false;
+
+                for(int i=0; i<Obj.Count; i++)
+                {
+                    if(Obj[i].email == _emailFieldLogin.text)
+                    {
+                        _emailcheck = true;
+                        if (Obj[i].password == _passwordFieldLogin.text)
+                        {
+                            print("email and password matched");
+                            ShowWelcomeScreen();
+                        }
+                        else
+                        {
+                            Debug.LogError("Wrong Password");
+                        }
+                    }
+                }
+                if(_emailcheck== false)
+                {
+                    Debug.LogError("user not found");
+                }
+            }
+        }
     }
+    
     void CreateAccount()
     {
         print("CreateAccount");
@@ -115,21 +161,115 @@ public class GameController : MonoBehaviour
         else
         {
             Debug.LogError("email format is not valid");
-
         }
+  
+        if (PlayerPrefs.HasKey("PlayerData"))
+        {
+              if (Obj.Count > 0) 
+            {
+                 bool _emailcheck = false;
 
-
-    }
-    public static bool validateEmail(string email)
+                for (int i = 0; i < Obj.Count; i++)
+                {
+                    print(Obj[i].email);
+                    if (Obj[i].email == _emailField.text)
+                    {
+                          _emailcheck = true;
+                     }
+                }
+                if (_emailcheck == true)
+                {
+                     Debug.LogError("user already existed, try another email");
+                    return;
+                }   
+            }
+        }    
+         PlayerData player1 = new PlayerData();
+        player1.name = _nameField.text;
+        player1.email = _emailField.text;
+        player1.password = _passwordField.text;
+        Obj.Add(player1);
+        SavePlayerData(Obj);   
+        StartCoroutine(loaddata());
+        ShowWelcomeScreen(); 
+         // _playerObj.name.Add(_nameField.text) ;
+        //_playerObj.email.Add(_emailField.text);
+        //_playerObj.password.Add( _passwordField.text);
+      }
+    IEnumerator loaddata()
     {
+        yield return new WaitForSeconds(.1f);
+        if (PlayerPrefs.HasKey("PlayerData"))
+        {
+            Obj = LoadPlayerData();
+        }      
+    }
+
+    public static bool validateEmail(string email) 
+    {  
         if (email != null)
             return Regex.IsMatch(email, MatchEmailPattern);
         else
             return false;
     }
-    // Update is called once per frame
-    void Update()
+
+
+    public void SavePlayerData(List<PlayerData> dataList)
     {
-        
+        string jsonData = JsonHelper.ToJson(dataList.ToArray(), true);
+        PlayerPrefs.SetString("PlayerDataList", jsonData);
+        PlayerPrefs.Save();
+    }
+
+    public List<PlayerData> LoadPlayerData()
+    {
+        if (PlayerPrefs.HasKey("PlayerDataList"))
+        {
+            string jsonData = PlayerPrefs.GetString("PlayerDataList");
+            return JsonHelper.FromJson<PlayerData>(jsonData).ToList();
+        }
+        else
+        {
+            Debug.LogWarning("No player data list found.");
+            return new List<PlayerData>();
+        }
+    }
+
+  
+}
+
+
+[System.Serializable]
+ public class PlayerData
+{
+    public string name;
+    public string email;
+    public string password;
+ }
+
+// JsonHelper class for serializing and deserializing arrays in JSON
+[System.Serializable]
+public class JsonHelper
+{
+    public static T[] FromJson<T>(string json)
+    {
+        Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
+        return wrapper.Items;
+    }
+
+    public static string ToJson<T>(T[] array, bool prettyPrint)
+    {
+        Wrapper<T> wrapper = new Wrapper<T>();
+        wrapper.Items = array;
+        return JsonUtility.ToJson(wrapper, prettyPrint);
+    }
+
+    [System.Serializable]
+    private class Wrapper<T>
+    {
+        public T[] Items;
     }
 }
+
+
+
