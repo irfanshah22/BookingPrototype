@@ -5,20 +5,21 @@ using UnityEngine.UI;
 public class buttonController : MonoBehaviour
 {
     public Button _myButton;
-    public Text _myText;
+    public Text _myTextmonth;
+    public Text _myTextyear;
     public int monthindex;
     // Start is called before the first frame update
 
     private void Awake()
     {
         _myButton = GetComponent<Button>();
-        _myText = GetComponentInChildren<Text>();
-    } 
+     } 
 
     void Start()
     {
-        _myButton.onClick.AddListener(MonthbuttonCalled);
+         _myButton.onClick.AddListener(MonthbuttonCalled);
     }
+   
 
     void MonthbuttonCalled()
     {

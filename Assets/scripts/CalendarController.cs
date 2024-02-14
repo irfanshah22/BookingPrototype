@@ -46,6 +46,7 @@ public class CalendarController : MonoBehaviour
 
     void CreateCalendar()
     {
+
         DateTime firstDay = _dateTime.AddDays(-(_dateTime.Day - 1));
         int index = GetDays(firstDay.DayOfWeek);
 
@@ -67,8 +68,10 @@ public class CalendarController : MonoBehaviour
                 }
             }
         }
+
         _yearNumText.text = _dateTime.Year.ToString();
         _monthNumText.text = _dateTime.Month.ToString();
+        monthController.Instance.getYearNumber(_dateTime.Year);
     }
 
     int GetDays(DayOfWeek day)
@@ -83,8 +86,7 @@ public class CalendarController : MonoBehaviour
             case DayOfWeek.Saturday: return 6;
             case DayOfWeek.Sunday: return 0;
         }
-
-        return 0;
+         return 0;
     }
     public void YearPrev()
     {
