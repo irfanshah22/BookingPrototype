@@ -57,7 +57,7 @@ public class CalendarController : MonoBehaviour
                 if (thatDay.Month == firstDay.Month)
                 {
                     _dateItems[i].SetActive(true);
-                      label.text = (date + 1).ToString() + " "+ GetMonthNameShort(_dateTime.Month);
+                      label.text = "  "+ (date + 1).ToString() + " "+ GetMonthNameShort(_dateTime.Month); 
                     date++;
                 }
             }
