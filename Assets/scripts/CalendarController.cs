@@ -17,30 +17,36 @@ public class CalendarController : MonoBehaviour
 
     private DateTime _dateTime;
     public static CalendarController _calendarInstance;
-
+    public Transform daysContainer;
     void Start()
     {
         _calendarInstance = this;
-        Vector3 startPos = _item.transform.localPosition;
+       // Vector3 startPos = _item.transform.localPosition;
         _dateItems.Clear();
-        _dateItems.Add(_item);
-
+        _dateItems.Add(daysContainer.GetChild(0).gameObject);  
+         //for (int i = 1; i < _totalDateNum; i++)
+        //{
+        //    GameObject item = GameObject.Instantiate(_item) as GameObject;
+        //    item.name = "Item" + (i + 1).ToString();
+        //    item.transform.SetParent(_item.transform.parent);
+        //    item.transform.localScale = Vector3.one;
+        //    item.transform.localRotation = Quaternion.identity;
+        //    item.transform.localPosition = new Vector3((i % 7) * 31 + startPos.x, startPos.y - (i / 7) * 25, startPos.z);
+        //    _dateItems.Add(item);
+        //}
         for (int i = 1; i < _totalDateNum; i++)
         {
-            GameObject item = GameObject.Instantiate(_item) as GameObject;
+            // GameObject item = GameObject.Instantiate(_item) as GameObject;
+            GameObject item = daysContainer.GetChild(i).gameObject;
             item.name = "Item" + (i + 1).ToString();
-            item.transform.SetParent(_item.transform.parent);
-            item.transform.localScale = Vector3.one;
-            item.transform.localRotation = Quaternion.identity;
-            item.transform.localPosition = new Vector3((i % 7) * 31 + startPos.x, startPos.y - (i / 7) * 25, startPos.z);
-
+            //  item.transform.SetParent(_item.transform.parent);
+            //  item.transform.localScale = Vector3.one;
+            //   item.transform.localRotation = Quaternion.identity;
+            //  item.transform.localPosition = new Vector3((i % 7) * 31 + startPos.x, startPos.y - (i / 7) * 25, startPos.z);
             _dateItems.Add(item);
         }
-
         _dateTime = DateTime.Now;
-
         CreateCalendar();
-
         _calendarPanel.SetActive(false);
     }
 
@@ -55,15 +61,14 @@ public class CalendarController : MonoBehaviour
         {
             Text label = _dateItems[i].GetComponentInChildren<Text>();
             _dateItems[i].SetActive(false);
-
-            if (i >= index)
+             if (i >= index)
             {
                 DateTime thatDay = firstDay.AddDays(date);
                 if (thatDay.Month == firstDay.Month)
                 {
                     _dateItems[i].SetActive(true);
-
-                    label.text = (date + 1).ToString();
+                    print(_dateItems[i].name); 
+                     label.text = (date + 1).ToString();
                     date++;
                 }
             }
