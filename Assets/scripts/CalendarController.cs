@@ -19,7 +19,8 @@ public class CalendarController : MonoBehaviour
     private DateTime _dateTime;
     public static CalendarController _calendarInstance;
     public Transform daysContainer;
- 
+    public Text _getdateText;
+
     void Start()
     {
         _calendarInstance = this;
@@ -34,7 +35,9 @@ public class CalendarController : MonoBehaviour
         }  
         _dateTime = DateTime.Now;
         CreateCalendar();
-        _calendarPanel.SetActive(false);
+        _getdateText.text = "";
+       // _calendarPanel.SetActive(false);
+         ShowCalendar(_getdateText);
     }
 
     void CreateCalendar()
@@ -54,8 +57,7 @@ public class CalendarController : MonoBehaviour
                 if (thatDay.Month == firstDay.Month)
                 {
                     _dateItems[i].SetActive(true);
-                    print(_dateItems[i].name); 
-                     label.text = (date + 1).ToString() + " "+ GetMonthNameShort(_dateTime.Month);
+                      label.text = (date + 1).ToString() + " "+ GetMonthNameShort(_dateTime.Month);
                     date++;
                 }
             }
@@ -175,6 +177,6 @@ public class CalendarController : MonoBehaviour
     public void OnDateItemClick(string day)
     {
         _target.text = _yearNumText.text + "Year" + _monthNumText.text + "Month" + day+"Day";
-        _calendarPanel.SetActive(false);
-    }
+       // _calendarPanel.SetActive(false);
+    }  
 }
