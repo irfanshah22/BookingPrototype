@@ -9,6 +9,7 @@ public class CalendarController : MonoBehaviour
     public GameObject _calendarPanel;
     public Text _yearNumText;
     public Text _monthNumText;
+    public Text _monthYearNameText;
 
     public GameObject _item;
 
@@ -18,40 +19,26 @@ public class CalendarController : MonoBehaviour
     private DateTime _dateTime;
     public static CalendarController _calendarInstance;
     public Transform daysContainer;
+ 
     void Start()
     {
         _calendarInstance = this;
-       // Vector3 startPos = _item.transform.localPosition;
-        _dateItems.Clear();
+         _dateItems.Clear();
         _dateItems.Add(daysContainer.GetChild(0).gameObject);  
-         //for (int i = 1; i < _totalDateNum; i++)
-        //{
-        //    GameObject item = GameObject.Instantiate(_item) as GameObject;
-        //    item.name = "Item" + (i + 1).ToString();
-        //    item.transform.SetParent(_item.transform.parent);
-        //    item.transform.localScale = Vector3.one;
-        //    item.transform.localRotation = Quaternion.identity;
-        //    item.transform.localPosition = new Vector3((i % 7) * 31 + startPos.x, startPos.y - (i / 7) * 25, startPos.z);
-        //    _dateItems.Add(item);
-        //}
+  
         for (int i = 1; i < _totalDateNum; i++)
         {
-            // GameObject item = GameObject.Instantiate(_item) as GameObject;
-            GameObject item = daysContainer.GetChild(i).gameObject;
+             GameObject item = daysContainer.GetChild(i).gameObject;
             item.name = "Item" + (i + 1).ToString();
-            //  item.transform.SetParent(_item.transform.parent);
-            //  item.transform.localScale = Vector3.one;
-            //   item.transform.localRotation = Quaternion.identity;
-            //  item.transform.localPosition = new Vector3((i % 7) * 31 + startPos.x, startPos.y - (i / 7) * 25, startPos.z);
             _dateItems.Add(item);
-        }
+        }  
         _dateTime = DateTime.Now;
         CreateCalendar();
         _calendarPanel.SetActive(false);
     }
 
     void CreateCalendar()
-    {
+    {  
 
         DateTime firstDay = _dateTime.AddDays(-(_dateTime.Day - 1));
         int index = GetDays(firstDay.DayOfWeek);
@@ -68,7 +55,7 @@ public class CalendarController : MonoBehaviour
                 {
                     _dateItems[i].SetActive(true);
                     print(_dateItems[i].name); 
-                     label.text = (date + 1).ToString();
+                     label.text = (date + 1).ToString() + " "+ GetMonthNameShort(_dateTime.Month);
                     date++;
                 }
             }
@@ -76,9 +63,48 @@ public class CalendarController : MonoBehaviour
 
         _yearNumText.text = _dateTime.Year.ToString();
         _monthNumText.text = _dateTime.Month.ToString();
+        _monthYearNameText.text = GetMonthNameLong(_dateTime.Month) + " "+ _dateTime.Year.ToString();
         monthController.Instance.getYearNumber(_dateTime.Year);
     }
-
+ 
+    String GetMonthNameShort(int _index)
+    {
+        switch (_index)
+        {
+            case 1: return "Jan";
+            case 2: return "Feb";
+            case 3: return "Mar";
+            case 4: return "Apr";
+            case 5: return "May";
+            case 6: return "Jun";
+            case 7: return "Jul";
+            case 8: return "Aug";
+            case 9: return "Sep";
+            case 10: return "Oct";
+            case 11: return "Nov";
+            case 12: return "Dec";
+        }
+        return "";
+    }
+    String GetMonthNameLong(int _index)
+    {
+        switch (_index)
+        {
+            case 1: return "January";
+            case 2: return "February";
+            case 3: return "March";
+            case 4: return "April";
+            case 5: return "May";
+            case 6: return "June";
+            case 7: return "July";
+            case 8: return "August";
+            case 9: return "September";
+            case 10: return "October";
+            case 11: return "November";
+            case 12: return "December";
+        }
+        return "";
+    }
     int GetDays(DayOfWeek day)
     {
         switch (day)
@@ -141,8 +167,8 @@ public class CalendarController : MonoBehaviour
     public void ShowCalendar(Text target)
     {
         _calendarPanel.SetActive(true);
-        _target = target;
-        _calendarPanel.transform.position = new Vector3(965, 475, 0);//Input.mousePosition-new Vector3(0,120,0);
+        _target = target;  
+       // _calendarPanel.transform.position = new Vector3(965, 475, 0);//Input.mousePosition-new Vector3(0,120,0);
     }
 
     Text _target;
