@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class CalendarDateItem : MonoBehaviour {
     public Button _mybutton;
+    public bool Matchday;
     private void Start()
     {
         _mybutton = GetComponent<Button>(); 

@@ -72,15 +72,23 @@ public class CalendarController : MonoBehaviour
                 {
                     _dateItems[i].SetActive(true);  
                     print(_dateTime.Day);
-                    label.text = "  " + (date + 1).ToString() + " " + GetMonthNameShort(_dateTime.Month);
-                     for (int matchCount = 0; matchCount < matchdatesString.Count; matchCount++)
+                    bool matchday = false;
+                   for (int matchCount = 0; matchCount < matchdatesString.Count; matchCount++)
                     {
                         if (matchDates[matchCount].Year == _dateTime.Year && matchDates[matchCount].Month == _dateTime.Month && matchDates[matchCount].Day == date + 1)
                         {
-                            label.text = "  " + (date + 1).ToString() + " " + GetMonthNameShort(_dateTime.Month) + "  Match day";
-                        }
+                            matchday = true;
+                           // label.text = "  " + (date + 1).ToString() + " " + GetMonthNameShort(_dateTime.Month) + "  Match day";
+                            label.text = "  " + (date + 1).ToString() + " " + GetMonthNameShort(_dateTime.Month)  ;
+                            _dateItems[i].gameObject.GetComponent<CalendarDateItem>().Matchday = matchday;
+                            label.color = Color.blue;
+                        }   
+                    } 
+                   if(matchday == false)
+                    {
+                        label.text = "  " + (date + 1).ToString() + " " + GetMonthNameShort(_dateTime.Month);
                     }
-                     date++;
+                    date++;
                 }  
             }
         }
