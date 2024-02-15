@@ -3,7 +3,12 @@ guid: 6f463fe928a51414cb48ad4a4bce7fdd
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Fbx Default Material
+    second: {fileID: 2100000, guid: 773c2438918871746b1ed79b04a9a12c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

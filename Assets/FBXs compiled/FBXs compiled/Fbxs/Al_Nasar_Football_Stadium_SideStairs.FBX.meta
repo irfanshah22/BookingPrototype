@@ -3,7 +3,12 @@ guid: 16a4b5501cf382642b90d5c7378b9948
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SittingArea
+    second: {fileID: 2100000, guid: fecfddedb2115bf438fca844eb393744, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
