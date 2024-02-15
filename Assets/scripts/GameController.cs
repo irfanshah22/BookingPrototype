@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
-
+using UnityEngine.SceneManagement;
  using System.Linq;
 using System;
 public class GameController : MonoBehaviour
 {
+   public static  GameController Instance;
     public const string MatchEmailPattern =
         @"^(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"
         + @"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\."
@@ -19,6 +20,7 @@ public class GameController : MonoBehaviour
      public GameObject SigninPanel;
      public GameObject WelcomePanel;
      public GameObject CalenderUI;
+     public GameObject BookingPanelUI;
 
     
     public Button SignUpBtn;
@@ -45,12 +47,17 @@ public class GameController : MonoBehaviour
 
     //// Welcome Screen //////
     public Button BookOnline;
-
-    ////////////////////////////
- 
- 
+      ////////////////////////////
+    // Booking Panel
+    public Button BooknowBtn; 
+    //////////
     public List< PlayerData> Obj;
 
+
+    private void Awake()
+    {
+        Instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -59,10 +66,13 @@ public class GameController : MonoBehaviour
         {
             Obj = LoadPlayerData();
         }
+     
+
          MainPanel.SetActive(true);
         SignupPanel.SetActive(false);
         SigninPanel.SetActive(false);
         WelcomePanel.SetActive(false);
+        BooknowBtn.onClick.AddListener(ShowGroundforbooking);
         BookOnline.onClick.AddListener(BookOnlineTickets);
         BackSignInBtn.onClick.AddListener(OnbackPanel);
         BackSignupBtn.onClick.AddListener(OnbackPanel);
@@ -72,12 +82,24 @@ public class GameController : MonoBehaviour
         noAccountSigninBtn.onClick.AddListener(OnSignInClick);
         loginBtn.onClick.AddListener(Login);
         RegisternowBtn.onClick.AddListener(CreateAccount);
+        if (AlreadySignedIn.Instance.SignedInBool)
+        {
+            ShowWelcomeScreen();
+        }
     }
     void BookOnlineTickets()
     {
         WelcomePanel.SetActive(false);
-        CalenderUI.SetActive(true);
+        CalenderUI.SetActive(true);  
     }
+    public void BookNow()
+    {
+      BookingPanelUI.SetActive(true);
+     }
+    public void ShowGroundforbooking()
+    {
+        SceneManager.LoadScene(1);
+    }  
     void OnbackPanel()
     {
         MainPanel.SetActive(true);
@@ -100,7 +122,7 @@ public class GameController : MonoBehaviour
     }
     void ShowWelcomeScreen()
     {
-        MainPanel.SetActive(false);
+         MainPanel.SetActive(false);
         SignupPanel.SetActive(false);
         SigninPanel.SetActive(false);
         WelcomePanel.SetActive(true);
@@ -140,6 +162,7 @@ public class GameController : MonoBehaviour
                         {
                             print("email and password matched");
                             ShowWelcomeScreen();
+                            AlreadySignedIn.Instance.SignedInBool = true;
                         }
                         else
                         {
@@ -204,11 +227,12 @@ public class GameController : MonoBehaviour
         Obj.Add(player1);
         SavePlayerData(Obj);   
         StartCoroutine(loaddata());
-        ShowWelcomeScreen(); 
+        ShowWelcomeScreen();
+        AlreadySignedIn.Instance.SignedInBool = true;
          // _playerObj.name.Add(_nameField.text) ;
         //_playerObj.email.Add(_emailField.text);
         //_playerObj.password.Add( _passwordField.text);
-      }
+    }
     IEnumerator loaddata()
     {
         yield return new WaitForSeconds(.1f);
