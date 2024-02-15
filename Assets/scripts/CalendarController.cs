@@ -10,19 +10,33 @@ public class CalendarController : MonoBehaviour
     public Text _yearNumText;
     public Text _monthNumText;
     public Text _monthYearNameText;
-
-    public GameObject _item;
-
-    public List<GameObject> _dateItems = new List<GameObject>();
+     public GameObject _item;
+     public List<GameObject> _dateItems = new List<GameObject>();
     const int _totalDateNum = 42;
 
-    private DateTime _dateTime;
+    public DateTime _dateTime;
     public static CalendarController _calendarInstance;
     public Transform daysContainer;
     public Text _getdateText;
 
+    /// <Define Match dates>
+    public string dateTimeString = "2018-12-16";
+    public List<string> matchdatesString;
+    [SerializeField]
+    public List<DateTime> matchDates;
+    /// </summary>
+ 
+
     void Start()
     {
+        matchDates = new List<DateTime>();
+        matchDates.Clear();
+        for (int i = 0; i < matchdatesString.Count; i++)
+        {
+            matchDates.Add(System.DateTime.Parse(matchdatesString[i]));
+         }
+
+
         _calendarInstance = this;
          _dateItems.Clear();
         _dateItems.Add(daysContainer.GetChild(0).gameObject);  
@@ -56,10 +70,18 @@ public class CalendarController : MonoBehaviour
                 DateTime thatDay = firstDay.AddDays(date);
                 if (thatDay.Month == firstDay.Month)
                 {
-                    _dateItems[i].SetActive(true);
-                      label.text = "  "+ (date + 1).ToString() + " "+ GetMonthNameShort(_dateTime.Month); 
-                    date++;
-                }
+                    _dateItems[i].SetActive(true);  
+                    print(_dateTime.Day);
+                    label.text = "  " + (date + 1).ToString() + " " + GetMonthNameShort(_dateTime.Month);
+                     for (int matchCount = 0; matchCount < matchdatesString.Count; matchCount++)
+                    {
+                        if (matchDates[matchCount].Year == _dateTime.Year && matchDates[matchCount].Month == _dateTime.Month && matchDates[matchCount].Day == date + 1)
+                        {
+                            label.text = "  " + (date + 1).ToString() + " " + GetMonthNameShort(_dateTime.Month) + "  Match day";
+                        }
+                    }
+                     date++;
+                }  
             }
         }
 

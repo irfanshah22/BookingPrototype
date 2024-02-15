@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
      public GameObject SignupPanel;
      public GameObject SigninPanel;
      public GameObject WelcomePanel;
+     public GameObject CalenderUI;
 
     
     public Button SignUpBtn;
@@ -41,12 +42,20 @@ public class GameController : MonoBehaviour
     public Button RegisteredSigninPanelBtn;
     public Button BackSignInBtn;
     /// </Sign in ENDED>
-     public List< PlayerData> Obj;
+
+    //// Welcome Screen //////
+    public Button BookOnline;
+
+    ////////////////////////////
+ 
+ 
+    public List< PlayerData> Obj;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (PlayerPrefs.HasKey("PlayerData"))
+     
+         if (PlayerPrefs.HasKey("PlayerData"))
         {
             Obj = LoadPlayerData();
         }
@@ -54,7 +63,7 @@ public class GameController : MonoBehaviour
         SignupPanel.SetActive(false);
         SigninPanel.SetActive(false);
         WelcomePanel.SetActive(false);
-
+        BookOnline.onClick.AddListener(BookOnlineTickets);
         BackSignInBtn.onClick.AddListener(OnbackPanel);
         BackSignupBtn.onClick.AddListener(OnbackPanel);
         SignUpBtn.onClick.AddListener(OnSignUpClick);
@@ -64,7 +73,11 @@ public class GameController : MonoBehaviour
         loginBtn.onClick.AddListener(Login);
         RegisternowBtn.onClick.AddListener(CreateAccount);
     }
-
+    void BookOnlineTickets()
+    {
+        WelcomePanel.SetActive(false);
+        CalenderUI.SetActive(true);
+    }
     void OnbackPanel()
     {
         MainPanel.SetActive(true);
