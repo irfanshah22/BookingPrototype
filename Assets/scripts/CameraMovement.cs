@@ -4,14 +4,50 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    public GameObject player;
+    public Transform target;
     public float sensitivity;
+
+    // Transforms to act as start and end markers for the journey.
+    public Transform startMarker;
+ 
+    // Movement speed in units per second.
+    public float speed = 1.0F;
+
+    // Time when the movement started.
+    private float startTime;
+
+    // Total distance between the markers.
+    private float journeyLength;
+
+    private bool _startingbool;
+    private void Start()
+    {
+        _startingbool = false;
+    }
+    public void Startmovement()
+    {
+
+        // Keep a note of the time the movement started.
+        startTime = Time.time;
+        startMarker = this.transform;
+         // Calculate the journey length.
+        journeyLength = Vector3.Distance(startMarker.position, target.position);
+        _startingbool = true;
+    }
+
 
     void FixedUpdate()
     {
-        float rotateHorizontal = Input.GetAxis("Mouse X");
-        float rotateVertical = Input.GetAxis("Mouse Y");
-        transform.RotateAround(player.transform.position, -Vector3.up, rotateHorizontal * sensitivity); //use transform.Rotate(-transform.up * rotateHorizontal * sensitivity) instead if you dont want the camera to rotate around the player
-        transform.RotateAround(Vector3.zero, transform.right, rotateVertical * sensitivity); // again, use transform.Rotate(transform.right * rotateVertical * sensitivity) if you don't want the camera to rotate around the player
+        if(_startingbool)
+        {
+             // Distance moved equals elapsed time times speed..
+            float distCovered = (Time.time - startTime) * speed;
+
+            // Fraction of journey completed equals current distance divided by total distance.
+            float fractionOfJourney = distCovered / journeyLength;
+
+            // Set our position as a fraction of the distance between the markers.
+            transform.position = Vector3.Lerp(startMarker.position, target.position, fractionOfJourney);
+         }
     }
 }
