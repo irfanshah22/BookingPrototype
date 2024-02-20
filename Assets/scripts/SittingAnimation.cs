@@ -23,9 +23,20 @@ public class SittingAnimation : MonoBehaviour
         Counter = 0;
         _myvirtualCam.GetCinemachineComponent<CinemachineComposer>().m_ScreenX = X_Middlepoint;
         _myvirtualCam.GetCinemachineComponent<CinemachineComposer>().m_ScreenY = Y_upperLimit;
+     }
+    public void ResetValues()
+    {
+        StopCoroutine(waitforTransitionSecond());
+         controlBool1 = false;
+        controlBool2 = false;  
+        Counter = 0;
+        _myvirtualCam.GetCinemachineComponent<CinemachineComposer>().m_ScreenX = X_Middlepoint;
+        _myvirtualCam.GetCinemachineComponent<CinemachineComposer>().m_ScreenY = Y_upperLimit;
+     }
+    public void StartLookingAround()
+    {
         StartCoroutine(waitforTransitionSecond());
-     } 
-
+    }
     IEnumerator waitforTransitionSecond()
     {
         yield return new WaitForSeconds(timedelay);
