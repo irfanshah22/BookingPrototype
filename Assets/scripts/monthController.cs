@@ -80,8 +80,7 @@ public class monthController : MonoBehaviour
      
     public void getYearNumber(int _year)
     {
-        print(_year);
-        if(Currentyear == _year)
+         if(Currentyear == _year)
         { 
             return;
         }  

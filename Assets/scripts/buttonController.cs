@@ -23,8 +23,7 @@ public class buttonController : MonoBehaviour
 
     void MonthbuttonCalled()
     {
-        print(monthindex);
-        CalendarController._calendarInstance.GetSpecificMonth(monthindex);
+         CalendarController._calendarInstance.GetSpecificMonth(monthindex);
     }
   
 }
