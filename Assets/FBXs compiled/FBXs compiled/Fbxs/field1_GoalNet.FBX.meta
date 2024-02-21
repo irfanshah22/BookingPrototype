@@ -3,7 +3,12 @@ guid: 375d3a9517f2a53498b237778f27121d
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GoalNet_Inst
+    second: {fileID: 2100000, guid: 1044fdf3363a2654c83c5e1fad14ba15, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

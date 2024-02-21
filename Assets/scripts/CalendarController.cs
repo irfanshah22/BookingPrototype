@@ -71,8 +71,7 @@ public class CalendarController : MonoBehaviour
                 if (thatDay.Month == firstDay.Month)
                 {
                     _dateItems[i].SetActive(true);  
-                    print(_dateTime.Day);
-                    bool matchday = false;
+                     bool matchday = false;
                    for (int matchCount = 0; matchCount < matchdatesString.Count; matchCount++)
                     {
                         if (matchDates[matchCount].Year == _dateTime.Year && matchDates[matchCount].Month == _dateTime.Month && matchDates[matchCount].Day == date + 1)
@@ -206,7 +205,8 @@ public class CalendarController : MonoBehaviour
     Text _target;
     public void OnDateItemClick(string day)
     {
-        _target.text = _yearNumText.text + "Year" + _monthNumText.text + "Month" + day+"Day";
+        //   _target.text = _yearNumText.text + "Year" + _monthNumText.text + "Month" + day+"Day";
+        _target.text = day+" " + _yearNumText.text; //+ "Year" + _monthNumText.text + "Month" + day+"Day";
        // _calendarPanel.SetActive(false);
     }  
 }
