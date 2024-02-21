@@ -64,7 +64,7 @@ public class GameController : MonoBehaviour
      
          if (PlayerPrefs.HasKey("PlayerData"))
         {
-            Obj = LoadPlayerData();
+          //  Obj = LoadPlayerData();
         }
      
 
@@ -145,10 +145,9 @@ public class GameController : MonoBehaviour
         {
             Debug.LogError("email format is not valid");
          }
-        if (PlayerPrefs.HasKey("PlayerData"))
-        {
-            Obj = LoadPlayerData();
-
+        //if (PlayerPrefs.HasKey("PlayerData"))
+        //{
+        //    Obj = LoadPlayerData();
             if (Obj.Count > 0)
             {
                 bool _emailcheck = false;
@@ -175,7 +174,7 @@ public class GameController : MonoBehaviour
                     Debug.LogError("user not found");
                 }
             }
-        }
+        //}
     }
     
     void CreateAccount()
@@ -226,7 +225,7 @@ public class GameController : MonoBehaviour
         player1.password = _passwordField.text;
         Obj.Add(player1);
         SavePlayerData(Obj);   
-        StartCoroutine(loaddata());
+       // StartCoroutine(loaddata());
         ShowWelcomeScreen();
         AlreadySignedIn.Instance.SignedInBool = true;
          // _playerObj.name.Add(_nameField.text) ;
@@ -236,12 +235,12 @@ public class GameController : MonoBehaviour
     IEnumerator loaddata()
     {
         yield return new WaitForSeconds(.1f);
-        if (PlayerPrefs.HasKey("PlayerData"))
-        {
-            Obj = LoadPlayerData();
-        }      
+        //if (PlayerPrefs.HasKey("PlayerData"))
+        //{
+        //    Obj = LoadPlayerData();
+        //}      
     }
-
+     
     public static bool validateEmail(string email) 
     {  
         if (email != null)
