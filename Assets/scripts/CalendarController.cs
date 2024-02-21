@@ -207,6 +207,7 @@ public class CalendarController : MonoBehaviour
     {
         //   _target.text = _yearNumText.text + "Year" + _monthNumText.text + "Month" + day+"Day";
         _target.text = day+" " + _yearNumText.text; //+ "Year" + _monthNumText.text + "Month" + day+"Day";
+        AlreadySignedIn.Instance.SelectedDate = _target.text;
        // _calendarPanel.SetActive(false);
-    }  
+    }    
 }

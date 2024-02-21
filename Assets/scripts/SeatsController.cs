@@ -14,6 +14,7 @@ public class SeatsController : MonoBehaviour
     public GameObject SecondCameradependentObj;
     public myviewObj Temptarget;
     public GameObject bookingPanel;
+    public Text _selectedDate; 
     public SittingAnimation _SittingAnimationController;
     public Button _bookAnotherDate;
     public Button _CheckAnotherTicket;
@@ -44,7 +45,8 @@ public class SeatsController : MonoBehaviour
                 {
                       Temptarget =  hit.transform.gameObject.GetComponent<myviewObj>();
                       bookingPanel.SetActive(true);
-                 }
+                    _selectedDate.text = AlreadySignedIn.Instance.SelectedDate;
+                 }  
                  Debug.Log("You selected the " + hit.transform.name); // ensure you picked right object
             }
         }

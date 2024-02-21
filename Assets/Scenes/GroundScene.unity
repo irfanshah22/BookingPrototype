@@ -8960,7 +8960,7 @@ GameObject:
   - component: {fileID: 1511245518}
   - component: {fileID: 1511245517}
   m_Layer: 5
-  m_Name: Text (Legacy) (1)
+  m_Name: dateselected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11792,6 +11792,7 @@ MonoBehaviour:
   SecondCameradependentObj: {fileID: 1438520586}
   Temptarget: {fileID: 0}
   bookingPanel: {fileID: 1544980771}
+  _selectedDate: {fileID: 1511245517}
   _SittingAnimationController: {fileID: 735609415}
   _bookAnotherDate: {fileID: 539885455}
   _CheckAnotherTicket: {fileID: 127468458}

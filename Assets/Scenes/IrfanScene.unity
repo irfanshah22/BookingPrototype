@@ -18391,6 +18391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SignedInBool: 0
+  SelectedDate: 
 --- !u!4 &1490140300
 Transform:
   m_ObjectHideFlags: 0
