@@ -25,15 +25,17 @@ public class SeatsController : MonoBehaviour
     public Transform initialPositionofCam1;
     public Material _NormalMaterial;
     public Material _BookedMaterial;
+    public bool IsreadyBook;
      // Start is called before the first frame update
  
     // Start is called before the first frame update
     void Start()
     {
-         _bookAnotherDate.onClick.AddListener(BacktoAnotherBooking);
+        IsreadyBook = true;
+        Cursor.lockState = CursorLockMode.None;
+        _bookAnotherDate.onClick.AddListener(BacktoAnotherBooking);
         _CheckAnotherTicket.onClick.AddListener(CheckAnotherSeat);
-
-        _BookthisSeat.onClick.AddListener(OpenConfirmationPanelSeat);
+         _BookthisSeat.onClick.AddListener(OpenConfirmationPanelSeat);
          _Instance = this;
         _seatsArea =  GetComponentsInChildren<myviewObj>();
         _BookthisSeat.gameObject.SetActive(false);
@@ -43,6 +45,11 @@ public class SeatsController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!IsreadyBook)
+        {
+            return;
+        }
+ 
         //  seatpoint
         if (Input.GetMouseButtonDown(0))
         {
@@ -68,7 +75,8 @@ public class SeatsController : MonoBehaviour
     }
     public void BookthisSeat()
     {
-        for(int i=0; i< _seatsArea.Length; i++)
+        IsreadyBook = false;
+        for (int i=0; i< _seatsArea.Length; i++)
         {
             _seatsArea[i].gameObject.GetComponent<MeshRenderer>().enabled = false;
         } 
@@ -95,11 +103,13 @@ public class SeatsController : MonoBehaviour
          ConfirmationPanel.SetActive(false);
         Temptarget.gameObject.GetComponent<MeshRenderer>().material = _BookedMaterial;
         Temptarget.gameObject.GetComponent<MeshRenderer>().tag = "booked";
+        _SittingAnimationController.ResetValues();
          CheckAnotherSeat();
-     } 
+      }  
     public void CheckAnotherSeat()
     {
-        _BookthisSeat.gameObject.SetActive(false);
+        _SittingAnimationController.controlBool1 = false;    
+        _BookthisSeat.gameObject.SetActive(false); 
 
         for (int i = 0; i < _seatsArea.Length; i++)
         {
@@ -107,18 +117,19 @@ public class SeatsController : MonoBehaviour
         } 
         FirstCamera.SetActive(true);
         SecondCamera.SetActive(false);
-    }
-     public void ReachedDestination()
+       IsreadyBook = true;
+        Cursor.lockState = CursorLockMode.None;
+    } 
+    public void ReachedDestination()
     {
          FirstCamera.SetActive(false);
         SecondCamera.SetActive(true);
         _bookAnotherDate.interactable = true;
         _CheckAnotherTicket.interactable = true;
         _BookthisSeat.gameObject.SetActive(true);
-        _SittingAnimationController.StartLookingAround() ;
+          _SittingAnimationController.StartLookingAround() ;
         FirstCamera.transform.rotation = initialPositionofCam1.rotation;
         FirstCamera.transform.position = initialPositionofCam1.position;
-        _SittingAnimationController.ResetValues();
      }   
       void BacktoAnotherBooking()
     {

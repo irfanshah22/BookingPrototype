@@ -6186,7 +6186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c39004de0ce29bb4d9fa71330df92a84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timedelay: 4
+  timedelay: 1
   X_Middlepoint: 0.602
   X_lowerLimit: -0.6
   X_upperLimit: 1.5
@@ -6197,6 +6197,8 @@ MonoBehaviour:
   Speed: 0.25
   controlBool1: 0
   controlBool2: 0
+  turn: {x: -0.5, y: 1.2}
+  sensitivity: 0.008
 --- !u!1001 &755515739
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10631,14 +10633,14 @@ MonoBehaviour:
   m_LookaheadIgnoreY: 0
   m_HorizontalDamping: 0.5
   m_VerticalDamping: 0.5
-  m_ScreenX: 0.6516313
-  m_ScreenY: 1
+  m_ScreenX: 0.2303996
+  m_ScreenY: 1.044397
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_SoftZoneWidth: 0.8
   m_SoftZoneHeight: 0.8
   m_BiasX: 0.00000029802322
-  m_BiasY: 0
+  m_BiasY: 0.00000007450581
   m_CenterOnActivate: 1
 --- !u!1 &1338680676
 GameObject:
@@ -15778,6 +15780,7 @@ MonoBehaviour:
   initialPositionofCam1: {fileID: 1067336380}
   _NormalMaterial: {fileID: 2100000, guid: f745858e34216184c85f8de106f97f58, type: 2}
   _BookedMaterial: {fileID: 2100000, guid: f9a12bcf370f728439aeee319a70db80, type: 2}
+  IsreadyBook: 0
 --- !u!1001 &2120517368
 PrefabInstance:
   m_ObjectHideFlags: 0
