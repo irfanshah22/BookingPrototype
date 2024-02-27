@@ -34,6 +34,7 @@ public class GameController : MonoBehaviour
     public Button RegisternowBtn;
     public Button noAccountSigninBtn;
     public Button BackSignupBtn;
+    public GameObject ErrorSignUp;
 
     /// </Sign Up ENDED>
 
@@ -43,6 +44,7 @@ public class GameController : MonoBehaviour
     public Button loginBtn;
     public Button RegisteredSigninPanelBtn;
     public Button BackSignInBtn;
+    public GameObject ErrorSignIn;
     /// </Sign in ENDED>
 
     //// Welcome Screen //////
@@ -64,7 +66,7 @@ public class GameController : MonoBehaviour
      
          if (PlayerPrefs.HasKey("PlayerData"))
         {
-            Obj = LoadPlayerData();
+          //  Obj = LoadPlayerData();
         }
      
 
@@ -109,13 +111,15 @@ public class GameController : MonoBehaviour
     void OnSignUpClick()
     {
         print("Sign Up");
-        MainPanel.SetActive(false);
-        SignupPanel.SetActive(true);
+        ErrorSignUp.SetActive(false);
+         MainPanel.SetActive(false);
+        SignupPanel.SetActive(true);  
         SigninPanel.SetActive(false);
      }
     void OnSignInClick()
     {
         print("Sign in");
+        ErrorSignIn.SetActive(false);
         MainPanel.SetActive(false);
         SignupPanel.SetActive(false);
         SigninPanel.SetActive(true);
@@ -134,21 +138,29 @@ public class GameController : MonoBehaviour
         if(_emailFieldLogin.text == "" || _passwordFieldLogin.text == "")
         {
             Debug.LogError("Email or password must not be empty");
+            ErrorSignIn.SetActive(true);
+            ErrorSignIn.GetComponent<Text>().text = "Email or password must not be empty";
+            StartCoroutine(OffErrorMsg(ErrorSignIn));
+            return;
         }
         _emailFieldLogin.text = _emailFieldLogin.text.Trim();
+        _emailFieldLogin.text = _emailFieldLogin.text.ToLower();
         _passwordFieldLogin.text = _passwordFieldLogin.text.Trim();
         if (validateEmail(_emailFieldLogin.text))
         {
             Debug.Log("email is valid");
-        }
+         }
         else
         {
             Debug.LogError("email format is not valid");
-         }
-        if (PlayerPrefs.HasKey("PlayerData"))
-        {
-            Obj = LoadPlayerData();
-
+            ErrorSignIn.SetActive(true);
+            ErrorSignIn.GetComponent<Text>().text = "email format is not valid";
+            StartCoroutine(OffErrorMsg(ErrorSignIn));
+            return;
+        }
+        //if (PlayerPrefs.HasKey("PlayerData"))
+        //{
+        //    Obj = LoadPlayerData();
             if (Obj.Count > 0)
             {
                 bool _emailcheck = false;
@@ -167,17 +179,28 @@ public class GameController : MonoBehaviour
                         else
                         {
                             Debug.LogError("Wrong Password");
-                        }
-                    }
+                        ErrorSignIn.SetActive(true);
+                        ErrorSignIn.GetComponent<Text>().text = "Wrong Password";
+                        StartCoroutine(OffErrorMsg(ErrorSignIn));
+                        return;
+                     } 
+                }
                 }
                 if(_emailcheck== false)
                 {
                     Debug.LogError("user not found");
+                ErrorSignIn.SetActive(true);
+                ErrorSignIn.GetComponent<Text>().text = "user not found";
+                   StartCoroutine(OffErrorMsg(ErrorSignIn));
                 }
             }
-        }
+        //}
     }
-    
+    IEnumerator OffErrorMsg(GameObject _errorObj)
+    {
+        yield return new WaitForSeconds(1.5f);
+        _errorObj.SetActive(false);
+    }
     void CreateAccount()
     {
         print("CreateAccount");
@@ -185,11 +208,15 @@ public class GameController : MonoBehaviour
          if (_nameField.text == "" || _emailField.text == ""  || _passwordField.text == "")
         {
             Debug.LogError("Fields must not be empty");
+            ErrorSignUp.SetActive(true);
+            ErrorSignUp.GetComponent<Text>().text = "Email or password must not be empty";
+            StartCoroutine(OffErrorMsg(ErrorSignUp));  
             return;
         }
         _nameField.text = _nameField.text.Trim();
         _emailField.text = _emailField.text.Trim();
-        _passwordField.text = _passwordField.text.Trim();
+        _emailField.text = _emailField.text.ToLower();
+        _passwordField.text = _passwordField.text.Trim();   
         if (validateEmail(_emailField.text))
         {
             Debug.Log("email is valid");
@@ -197,6 +224,10 @@ public class GameController : MonoBehaviour
         else
         {
             Debug.LogError("email format is not valid");
+            ErrorSignUp.SetActive(true);
+            ErrorSignUp.GetComponent<Text>().text = "email format is not valid";
+            StartCoroutine(OffErrorMsg(ErrorSignUp));
+            return;
         }
   
         if (PlayerPrefs.HasKey("PlayerData"))
@@ -216,17 +247,20 @@ public class GameController : MonoBehaviour
                 if (_emailcheck == true)
                 {
                      Debug.LogError("user already existed, try another email");
+                    ErrorSignUp.SetActive(true);
+                    ErrorSignUp.GetComponent<Text>().text = "user already existed, try another email";
+                    StartCoroutine(OffErrorMsg(ErrorSignUp));
                     return;
                 }   
             }
-        }    
+        }     
          PlayerData player1 = new PlayerData();
         player1.name = _nameField.text;
-        player1.email = _emailField.text;
+        player1.email = _emailField.text;  
         player1.password = _passwordField.text;
         Obj.Add(player1);
         SavePlayerData(Obj);   
-        StartCoroutine(loaddata());
+       // StartCoroutine(loaddata());
         ShowWelcomeScreen();
         AlreadySignedIn.Instance.SignedInBool = true;
          // _playerObj.name.Add(_nameField.text) ;
@@ -236,12 +270,12 @@ public class GameController : MonoBehaviour
     IEnumerator loaddata()
     {
         yield return new WaitForSeconds(.1f);
-        if (PlayerPrefs.HasKey("PlayerData"))
-        {
-            Obj = LoadPlayerData();
-        }      
+        //if (PlayerPrefs.HasKey("PlayerData"))
+        //{
+        //    Obj = LoadPlayerData();
+        //}      
     }
-
+     
     public static bool validateEmail(string email) 
     {  
         if (email != null)

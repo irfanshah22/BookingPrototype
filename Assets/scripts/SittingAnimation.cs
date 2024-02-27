@@ -17,69 +17,62 @@ public class SittingAnimation : MonoBehaviour
     float temptargetValue;
     public bool controlBool1;
     public bool controlBool2;
+    public Vector2 turn;
+    public float sensitivity = .4f;
+    private bool ShowMouse;
+
     // Start is called before the first frame update
     void Start()
     {
+        controlBool1 = false;  
         Counter = 0;
         _myvirtualCam.GetCinemachineComponent<CinemachineComposer>().m_ScreenX = X_Middlepoint;
         _myvirtualCam.GetCinemachineComponent<CinemachineComposer>().m_ScreenY = Y_upperLimit;
-     }
+     }  
     public void ResetValues()
     {
-        StopCoroutine(waitforTransitionSecond());
-         controlBool1 = false;
-        controlBool2 = false;  
-        Counter = 0;
+          controlBool1 = false;
+        Cursor.lockState = CursorLockMode.None;
+        //controlBool2 = false;  
+        //Counter = 0;
         _myvirtualCam.GetCinemachineComponent<CinemachineComposer>().m_ScreenX = X_Middlepoint;
         _myvirtualCam.GetCinemachineComponent<CinemachineComposer>().m_ScreenY = Y_upperLimit;
-     }
+        SeatsController._Instance.IsreadyBook = true;
+
+    }
     public void StartLookingAround()
     {
-        StartCoroutine(waitforTransitionSecond());
-    }
-    IEnumerator waitforTransitionSecond()
-    {
-        yield return new WaitForSeconds(timedelay);
-         if(Counter==0)
-        {
-            Counter = 1;
-            temptargetValue = X_upperLimit;
-            controlBool1 = true;
-            controlBool2 = false;
-        }    
-        else if(Counter ==1)
-        {
-            Counter = 0;
-            temptargetValue = X_lowerLimit;
-            controlBool1 = false;
-            controlBool2 = true;
-        }
-     }  
-      
+        ShowMouse = true;
+        turn = new Vector2(-.5f, 1.2f);
+        SeatsController._Instance.IsreadyBook = false;
+         controlBool1 = true;
+     }
+
     // Update is called once per frame
     void Update()
-    {   
-        if(controlBool1)
-        {  
-            float lerpedValue = Mathf.Lerp(_myvirtualCam.GetCinemachineComponent<CinemachineComposer>().m_ScreenX, temptargetValue, Time.deltaTime * Speed);
-             _myvirtualCam.GetCinemachineComponent<CinemachineComposer>().m_ScreenX = lerpedValue;
-            if (lerpedValue >= (temptargetValue - .15f) && controlBool1)
-            {
-                controlBool1 = false;
-                Debug.Log("11L : " + lerpedValue);
-                StartCoroutine(waitforTransitionSecond());
-            }
-         }
-        else if (controlBool2)
+    {
+       if (controlBool1)
         {
-            float lerpedValue = Mathf.Lerp(_myvirtualCam.GetCinemachineComponent<CinemachineComposer>().m_ScreenX, temptargetValue, Time.deltaTime * Speed);
-             _myvirtualCam.GetCinemachineComponent<CinemachineComposer>().m_ScreenX = lerpedValue;
-            if (lerpedValue <= (temptargetValue + .15f) && controlBool2)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                controlBool2 = false;
-                Debug.Log("11L : " + lerpedValue);
-                StartCoroutine(waitforTransitionSecond());
-            }
+                ShowMouse = !ShowMouse;
+                HideShowMouse();
+            } 
+             turn.x += Input.GetAxis("Mouse X") * sensitivity;
+            turn.y += Input.GetAxis("Mouse Y") * sensitivity;
+            _myvirtualCam.GetCinemachineComponent<CinemachineComposer>().m_ScreenX = -turn.x;
+            _myvirtualCam.GetCinemachineComponent<CinemachineComposer>().m_ScreenY = turn.y;
         }
-     } 
+     }  
+   void HideShowMouse()
+    {
+        if(ShowMouse)
+        {
+            Cursor.lockState = CursorLockMode.None;
+        } 
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+         }
+    }    
 }

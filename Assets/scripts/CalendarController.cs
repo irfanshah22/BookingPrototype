@@ -34,9 +34,9 @@ public class CalendarController : MonoBehaviour
         for (int i = 0; i < matchdatesString.Count; i++)
         {
             matchDates.Add(System.DateTime.Parse(matchdatesString[i]));
+           print(  matchDates[i]);
          }
-
-
+ 
         _calendarInstance = this;
          _dateItems.Clear();
         _dateItems.Add(daysContainer.GetChild(0).gameObject);  
@@ -72,16 +72,35 @@ public class CalendarController : MonoBehaviour
                 {
                     _dateItems[i].SetActive(true);  
                      bool matchday = false;
-                   for (int matchCount = 0; matchCount < matchdatesString.Count; matchCount++)
-                    {
-                        if (matchDates[matchCount].Year == _dateTime.Year && matchDates[matchCount].Month == _dateTime.Month && matchDates[matchCount].Day == date + 1)
+                    label.color = Color.black;
+                    _dateItems[i].gameObject.GetComponent<CalendarDateItem>().Matchday = false;
+
+                    for (int matchCount = 0; matchCount < matchdatesString.Count; matchCount++)
+                    {   
+                         //if (matchDates[matchCount].Year == _dateTime.Year && matchDates[matchCount].Month == _dateTime.Month)
+                        //{
+                   
+                        if(matchDates[matchCount].Year == _dateTime.Year)
                         {
-                            matchday = true;
-                           // label.text = "  " + (date + 1).ToString() + " " + GetMonthNameShort(_dateTime.Month) + "  Match day";
-                            label.text = "  " + (date + 1).ToString() + " " + GetMonthNameShort(_dateTime.Month)  ;
-                            _dateItems[i].gameObject.GetComponent<CalendarDateItem>().Matchday = matchday;
-                            label.color = Color.blue;
-                        }   
+                            if (matchDates[matchCount].Month == _dateTime.Month)
+                            {
+                            
+                                if (matchDates[matchCount].Day == date + 1)
+                                {
+                                    matchday = true;
+                                    print("date year " + matchDates[matchCount].Year);
+                                    print("date Month " + matchDates[matchCount].Month);
+                                    label.text = "  " + (date + 1).ToString() + " " + GetMonthNameShort(_dateTime.Month);
+                                    _dateItems[i].gameObject.GetComponent<CalendarDateItem>().Matchday = matchday;
+                                    label.color = Color.blue;
+                                }
+                            } 
+                            
+                            // label.text = "  " + (date + 1).ToString() + " " + GetMonthNameShort(_dateTime.Month) + "  Match day";
+                        
+                         } 
+                          //   }
+                         //}   
                     } 
                    if(matchday == false)
                     {
@@ -91,8 +110,7 @@ public class CalendarController : MonoBehaviour
                 }  
             }
         }
-
-        _yearNumText.text = _dateTime.Year.ToString();
+         _yearNumText.text = _dateTime.Year.ToString();
         _monthNumText.text = _dateTime.Month.ToString();
         _monthYearNameText.text = GetMonthNameLong(_dateTime.Month) + " "+ _dateTime.Year.ToString();
         monthController.Instance.getYearNumber(_dateTime.Year);
@@ -176,9 +194,7 @@ public class CalendarController : MonoBehaviour
     public void GetSpecificMonth(int _index)
     {
         int CurrentMonth = _dateTime.Month;
-        print("current Month " + CurrentMonth);
-        print("Index Month " + _index);
-        if(_index == CurrentMonth)
+         if(_index == CurrentMonth)
         {
             return;
         }
@@ -207,6 +223,7 @@ public class CalendarController : MonoBehaviour
     {
         //   _target.text = _yearNumText.text + "Year" + _monthNumText.text + "Month" + day+"Day";
         _target.text = day+" " + _yearNumText.text; //+ "Year" + _monthNumText.text + "Month" + day+"Day";
+        AlreadySignedIn.Instance.SelectedDate = _target.text;
        // _calendarPanel.SetActive(false);
-    }  
+    }    
 }
